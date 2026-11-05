@@ -1,0 +1,5 @@
+{
+  "name": "claude-cache-kpis",
+  "owner": { "name": "ScalingMBA" },
+  "plugins": [{ "name": "cache-kpis", "source": "./" }]
+}

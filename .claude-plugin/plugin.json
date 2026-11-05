@@ -1,0 +1,6 @@
+{
+  "name": "cache-kpis",
+  "version": "0.1.0",
+  "description": "Prompt-cache KPIs of the active session in a pane: hit rate, misses with cause, per subagent",
+  "types": "./types/index.d.ts"
+}
