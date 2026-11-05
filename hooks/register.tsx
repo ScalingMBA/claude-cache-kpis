@@ -45,7 +45,7 @@ export const register: Register = on => {
   on('session.start', async ($, e, next) => {
     await $.command.register({
       name: COMMAND,
-      description: 'Zeigt die Prompt-Cache-KPIs dieser Session in einem Panel',
+      description: 'Show this session\'s prompt-cache KPIs in a pane',
     })
     // A reload runs this again: the line under the prompt comes back from state.
     $.ui.status(statusLine(await read($, stats)))
@@ -59,7 +59,7 @@ export const register: Register = on => {
   on('command.run', { command: COMMAND }, async $ => {
     await $.ui.open({ id: PANE, title: TITLE, focus: true, closeOnEscape: true })
 
-    return { text: 'Cache-Panel geöffnet.' }
+    return { text: 'Cache pane opened.' }
   })
 
   on('session.end', { reason: 'clear' }, async ($, e, next) => {
@@ -126,15 +126,15 @@ export const register: Register = on => {
     const turnRow = (turn: CacheTurn | null) => {
       const status = turnStatus(turn)
 
-      return row('Letzter Turn', status.text, STATUS_COLOR[status.kind])
+      return row('Last turn', status.text, STATUS_COLOR[status.kind])
     }
 
     const lastRequestRow = (thread: CacheThread) =>
       thread.lastRequestHit === null
-        ? row('Letzter Request', thread.last === null ? '–' : 'Kaltstart')
+        ? row('Last request', thread.last === null ? '–' : 'Cold start')
         : thread.lastRequestHit
-          ? row('Letzter Request', `✓ ${formatRate(thread.last && hitRate(thread.last))}`, 'success')
-          : row('Letzter Request', `✗ ${formatRate(thread.last && hitRate(thread.last))}`, 'error')
+          ? row('Last request', `✓ ${formatRate(thread.last && hitRate(thread.last))}`, 'success')
+          : row('Last request', `✗ ${formatRate(thread.last && hitRate(thread.last))}`, 'error')
 
     const lastMissRow = (thread: CacheThread) => {
       const miss = thread.lastMiss
@@ -143,10 +143,10 @@ export const register: Register = on => {
         return null
       }
 
-      const pause = miss.cause === 'ttl' ? ` nach ${formatGap(miss.gapMs)}` : ''
+      const pause = miss.cause === 'ttl' ? ` after ${formatGap(miss.gapMs)}` : ''
 
       return row(
-        'Letzter Miss',
+        'Last miss',
         `#${miss.request} ${CAUSE_LABEL[miss.cause]}${pause} · ${formatTokens(miss.lost)}`,
         'warning',
       )
@@ -170,8 +170,8 @@ export const register: Register = on => {
 
     return (
       <Box flexDirection="column">
-        <Text weight="bold">Hauptthread</Text>
-        {row('Hit-Rate', formatRate(hitRate(main)))}
+        <Text weight="bold">Main thread</Text>
+        {row('Hit rate', formatRate(hitRate(main)))}
         {lastRequestRow(main)}
         {turnRow(lastTurn)}
         {row(
@@ -180,20 +180,20 @@ export const register: Register = on => {
           main.misses === 0 ? undefined : 'warning',
         )}
         {lastMissRow(main)}
-        {row('Verlorene Tokens', formatTokens(main.lost))}
+        {row('Tokens lost', formatTokens(main.lost))}
         {row('Requests', String(main.requests))}
-        {row('Gelesen', formatTokens(main.read))}
-        {row('Geschrieben', formatTokens(main.write))}
-        {row('Ungecacht', formatTokens(main.input))}
+        {row('Read', formatTokens(main.read))}
+        {row('Written', formatTokens(main.write))}
+        {row('Uncached', formatTokens(main.input))}
         <Text> </Text>
         <Text weight="bold">Subagents ({agents.length})</Text>
-        {agents.length === 0 && <Text dimColor>Noch keine.</Text>}
+        {agents.length === 0 && <Text dimColor>None yet.</Text>}
         {agents.length > shown.length && (
-          <Text dimColor>… {agents.length - shown.length} ältere ausgeblendet</Text>
+          <Text dimColor>… {agents.length - shown.length} older hidden</Text>
         )}
         {shown.map(agentLine)}
         <Text> </Text>
-        <Button key="reset" label="Zurücksetzen" hotkey="r" onPress={() => reset($)} />
+        <Button key="reset" label="Reset" hotkey="r" onPress={() => reset($)} />
       </Box>
     )
   })

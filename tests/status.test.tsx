@@ -110,8 +110,8 @@ test('after a 10 min pause the line under the prompt shows the turn invalidated 
   // first request: cold start, 0 of 20,000 read → 0.0%, the turn a hit
   // second: 0 of 41,000 read → 0.0%, the 20,000 cached tokens lost to the pause
   expect(lines).toStrictEqual([
-    'cache 0.0% · letzter Turn ✓ 0.0% · 1 Req · Misses 0 · /cache-kpis',
-    'cache 0.0% · letzter Turn ✗ invalidiert (TTL) · Misses 1 (TTL 1) · /cache-kpis',
+    'cache 0.0% · last turn ✓ 0.0% · 1 Req · Misses 0 · /cache-kpis',
+    'cache 0.0% · last turn ✗ invalidated (TTL) · Misses 1 (TTL 1) · /cache-kpis',
   ])
 })
 
@@ -126,7 +126,7 @@ test('a reload brings the line back from the stats the session kept', async ($, 
   await startSession($)
 
   expect(lines.slice(before)).toStrictEqual([
-    'cache 0.0% · letzter Turn ✓ 0.0% · 1 Req · Misses 0 · /cache-kpis',
+    'cache 0.0% · last turn ✓ 0.0% · 1 Req · Misses 0 · /cache-kpis',
   ])
 })
 

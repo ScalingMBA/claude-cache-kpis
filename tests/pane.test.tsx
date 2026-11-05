@@ -57,10 +57,10 @@ test('a request after a 10 min pause shows the last turn as invalidated by TTL',
   await step('t2', 3)
 
   const ui = await $.ui.mount({ ...PANE, surface: 'terminal' })
-  const turn = await ui.find({ type: 'Text', text: /Letzter Turn/ })
+  const turn = await ui.find({ type: 'Text', text: /Last turn/ })
   const misses = await ui.find({ type: 'Text', text: /^Misses/ })
 
-  expect(turn?.text).toMatch(/✗ invalidiert \(TTL\)/)
+  expect(turn?.text).toMatch(/✗ invalidated \(TTL\)/)
   expect(misses?.text).toMatch(/1 \(TTL 1\)/)
   await ui.unmount()
 })
@@ -84,7 +84,7 @@ test('a request that reads the cached prefix shows the last turn as a hit', asyn
   await run($.turn.step({ turnId: 't2', index: 0, model: 'x', messageCount: 3 }))
 
   const ui = await $.ui.mount({ ...PANE, surface: 'terminal' })
-  const turn = await ui.find({ type: 'Text', text: /Letzter Turn/ })
+  const turn = await ui.find({ type: 'Text', text: /Last turn/ })
 
   // 20,000 / (0 + 20,000 + 500) = 97.56…% → 97.6%
   expect(turn?.text).toMatch(/✓ 97\.6% · 1 Req/)

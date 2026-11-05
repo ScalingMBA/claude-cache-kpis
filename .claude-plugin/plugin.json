@@ -1,6 +1,11 @@
 {
   "name": "cache-kpis",
-  "version": "0.1.0",
-  "description": "Prompt-cache KPIs of the active session in a pane: hit rate, misses with cause, per subagent",
-  "types": "./types/index.d.ts"
+  "version": "0.2.0",
+  "description": "Prompt-cache KPIs of the active session: hit rate, misses with cause, per subagent",
+  "types": "./types/index.d.ts",
+  "license": "MIT",
+  "author": {
+    "name": "Bajram Qelibari"
+  },
+  "repository": "https://github.com/ScalingMBA/claude-cache-kpis"
 }

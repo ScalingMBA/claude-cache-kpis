@@ -22,7 +22,7 @@ const MAX_AGENTS = 50
 
 export const CAUSE_LABEL: Record<MissCause, string> = {
   ttl: 'TTL',
-  model: 'Modell',
+  model: 'Model',
   compaction: 'Compaction',
   prefix: 'Prefix',
 }
@@ -43,7 +43,7 @@ export const emptyThread = (id: string, label: string): CacheThread => ({
 })
 
 export const EMPTY_STATS: CacheStats = {
-  main: emptyThread(MAIN_ID, 'Hauptthread'),
+  main: emptyThread(MAIN_ID, 'Main thread'),
   agents: [],
   lastTurn: null,
 }
@@ -210,7 +210,7 @@ export const turnStatus = (turn: CacheTurn | null): TurnStatus => {
 
   const causes = [...new Set(turn.causes)].map(cause => CAUSE_LABEL[cause]).join(', ')
 
-  return { kind: 'miss', text: `✗ invalidiert (${causes})` }
+  return { kind: 'miss', text: `✗ invalidated (${causes})` }
 }
 
 /** The line under the prompt; undefined before the main thread's first request. */
@@ -225,7 +225,7 @@ export const statusLine = (stats: CacheStats): string | undefined => {
     main.misses === 0 ? 'Misses 0' : `Misses ${main.misses} (${formatCauses(main.causes)})`
   const agentPart = agents.length === 0 ? '' : ` · Agents ${agents.length}`
 
-  return `cache ${formatRate(hitRate(main))} · letzter Turn ${turnStatus(lastTurn).text} · ${misses}${agentPart} · /cache-kpis`
+  return `cache ${formatRate(hitRate(main))} · last turn ${turnStatus(lastTurn).text} · ${misses}${agentPart} · /cache-kpis`
 }
 
 export const formatCauses = (causes: Record<MissCause, number>): string =>
